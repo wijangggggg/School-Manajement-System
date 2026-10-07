@@ -17,9 +17,9 @@
                 <tr>
                     <th class="text-center" width="5%">No</th>
                     <th class="text-center" width="20%">Time</th>
-                    <th class="text-center" width="13%">Admin</th>
-                    <th class="text-center" width="13%">Aktivity</th>
-                    <th class="text-center">Description</th>
+                    <th class="text-center" width="13%">Role</th>
+                    <th class="text-center" width="13%">Activity</th>
+                    <th class="text-center">Description</th>    
                 </tr>
             </thead>
             <tbody>

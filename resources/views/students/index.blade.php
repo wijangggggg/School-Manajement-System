@@ -8,12 +8,6 @@
 @endsection
 
 @section('content')
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
 
 @if(session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -238,7 +232,8 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 <!-- 3. PERUBAHAN: TAMBAHAN CDN SWEETALERT AGAR POP-UP HAPUS BISA MUNCUL -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -291,12 +286,10 @@
     });
 </script>
 <script>
-    // Event listener dipasang ke 'document' agar mengenali tombol baru walau halaman pindah via AJAX
     document.addEventListener('submit', function(e) {
 
-        // Cek apakah yang disubmit adalah form dengan class 'delete-form'
         if (e.target && e.target.classList.contains('delete-form')) {
-            e.preventDefault(); // Tahan dulu form agar tidak langsung terhapus
+            e.preventDefault(); 
 
             Swal.fire({
                 title: 'Apakah Anda yakin?',
@@ -309,7 +302,6 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Jika user klik Ya, baru formnya benar-benar disubmit
                     e.target.submit();
                 }
             });

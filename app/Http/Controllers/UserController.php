@@ -10,15 +10,28 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Pastikan hanya admin yang bisa melihat data pengguna
         if (Auth::user()->role !== 'admin') {
-            return redirect('http://127.0.0.1:9999');
+            // Disarankan redirect ke route internal/dashboard alih-alih URL port hardcoded
+            return redirect('/dashboard')->with('error', 'Anda tidak memiliki akses ke halaman tersebut!');
         }
 
-        $users = User::all();
-        return view('users.index', compact('users'));
+        // 2. Baris $users = User::all() sudah dihapus dari sini
+
+        $search = $request->input('search');
+
+        $users = User::when($search, function ($query, $search) {
+            return $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('role', 'like', "%{$search}%");
+        })
+        ->latest()
+        ->paginate(30)
+        ->withQueryString();
+
+        return view('users.index', compact('users', 'search'));
     }
 
     public function destroy($id)
@@ -44,7 +57,7 @@ class UserController extends Controller
         // 2. Hapus akun
         $user->delete();
 
-        return redirect('/users')->with('success', 'Akun pengguna berhasil dihapus!');
+        return redirect()->route('users.index')->with('success', 'Akun pengguna berhasil dihapus!');
     }
 
     public function create()
@@ -97,7 +110,7 @@ class UserController extends Controller
             'description' => 'Admin menambahkan akun pengguna: ' . $request->name
         ]);
 
-        return redirect('/users')->with('success', 'Akun Pengguna berhasil ditambahkan!');
+        return redirect()->route('users.index')->with('success', 'Akun Pengguna berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -139,6 +152,6 @@ class UserController extends Controller
             'description' => 'Admin mengubah akun pengguna: ' . $request->name
         ]);
 
-        return redirect('/users')->with('success', 'Akun Pengguna berhasil diperbarui!');
+        return redirect()->route('users.index')->with('success', 'Akun Pengguna berhasil diperbarui!');
     }
 }

@@ -66,7 +66,7 @@ class SubjectController extends Controller
             'subject_name' => 'required'
         ]);
         Subject::create($request->all());
-        return redirect('/subjects');
+        return redirect('/subjects')->with('success', 'Mata pelajaran berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -83,12 +83,12 @@ class SubjectController extends Controller
         ]);
         $subject = Subject::findOrFail($id);
         $subject->update($request->all());
-        return redirect('/subjects');
+        return redirect('/subjects')->with('success', 'Mata pelajaran berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
         Subject::findOrFail($id)->delete();
-        return redirect('/subjects');
+        return redirect('/subjects')->with('success', 'Mata pelajaran berhasil dihapus!');
     }
 }

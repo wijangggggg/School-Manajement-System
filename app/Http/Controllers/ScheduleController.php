@@ -6,6 +6,7 @@ use App\Models\Schedule;
 use App\Models\Classroom;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use App\Models\Subject;
 
 class ScheduleController extends Controller
 {
@@ -15,19 +16,21 @@ class ScheduleController extends Controller
         // Ambil data kelas dan guru untuk diletakkan di dropdown (pilihan)
         $classes = Classroom::all();
         $teachers = Teacher::all();
+        $subjects = Subject::all();
 
-        return view('schedules.create', compact('classes', 'teachers'));
+        return view('schedules.create', compact('classes', 'teachers', 'subjects'));
     }
 
     // Method store untuk menyimpan data ke database
     public function store(Request $request)
     {
         $request->validate([
-            'class_id' => 'required',
-            'subject_name' => 'required',
-            'day' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required'
+            'class_id'      => 'required',
+            'subject_name'  => 'required',
+            'teacher_id'     => 'required',
+            'day'           => 'required',
+            'start_time'    => 'required',
+            'end_time'      => 'required',
         ]);
 
         Schedule::create($request->all());
@@ -42,19 +45,22 @@ class ScheduleController extends Controller
         $schedule = Schedule::findOrFail($id);
         $classes = Classroom::all();
         $teachers = Teacher::all();
+        $subjects = Subject::all();
 
-        return view('schedules.edit', compact('schedule', 'classes', 'teachers'));
+        return view('schedules.edit', compact('schedule', 'classes', 'teachers', 'subjects'));
     }
 
     // Method update untuk menyimpan perubahan data
     public function update(Request $request, $id)
     {
+        //dd($request->all(), $id);
+
         $request->validate([
-            'class_id' => 'required',
-            'subject_name' => 'required',
-            'day' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required'
+            'class_id'      => 'required',
+            'subject_name'  => 'required',
+            'day'           => 'required',
+            'start_time'    => 'required',
+            'end_time'      => 'required',
         ]);
 
         $schedule = Schedule::findOrFail($id);

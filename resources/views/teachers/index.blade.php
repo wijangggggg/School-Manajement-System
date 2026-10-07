@@ -7,14 +7,7 @@
 @endsection
 
 @section('content')
-@if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center" role="alert">
-        <div class="mb-0">{{ session('success') }}</div>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="background: transparent; border: none; font-size: 1.5rem; cursor: pointer;">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-@endif
+
 <div class="card shadow-sm border-0">
     <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
         <h5 class="mb-0 fw-bold text-primary">Manajemen Data Guru</h5>

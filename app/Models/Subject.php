@@ -11,3 +11,24 @@ class Subject extends Model
     protected $primaryKey = 'subject_id';
     protected $guarded = [];
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

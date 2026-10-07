@@ -1,4 +1,4 @@
-@extends('layouts.app') <!-- Sesuaikan dengan nama layout utama Anda jika berbeda, misal: layouts.main -->
+@extends('layouts.app')
 
 @section('content')
 <div class="container-fluid">
@@ -18,7 +18,7 @@
 
             <!-- Tombol Tambah Hanya untuk Admin -->
             @if(Auth::user()->role === 'admin')
-                <a href="#" class="btn btn-primary btn-sm">
+                <a href="{{ route('schedules.create') }}" class="btn btn-primary btn-sm">
                     + Tambah Jadwal
                 </a>
             @endif
@@ -36,7 +36,6 @@
                             <th>Mata Pelajaran</th>
                             <th>Guru Pengajar</th>
 
-                            <!-- Kolom Tambahan Hanya untuk Admin -->
                             @if(Auth::user()->role === 'admin')
                                 <th>Kelas</th>
                                 <th>Aksi</th>
@@ -55,7 +54,6 @@
                                 <td>{{ $schedule->subject_name }}</td>
                                 <td>{{ $schedule->teacher ? $schedule->teacher->full_name : '-' }}</td>
 
-                                <!-- Data Tambahan Hanya untuk Admin -->
                                 @if(Auth::user()->role === 'admin')
                                     <td class="text-center">
                                         <span class="badge bg-info text-dark">
@@ -63,14 +61,19 @@
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <!-- Tombol Edit & Hapus (Nanti bisa diaktifkan routenya) -->
-                                        <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                                        <button class="btn btn-danger btn-sm">Hapus</button>
+                                        <!-- Tombol Edit -->
+                                        <a href="{{ route('schedules.edit', $schedule->schedule_id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                        <!-- Bagian Tombol Hapus di dalam Tabel -->
+                                        <form action="{{ route('schedules.destroy', $schedule->schedule_id) }}" method="POST" class="d-inline" id="delete-form-{{ $schedule->schedule_id }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <!-- Ubah menjadi type="button" dan tambahkan data-url -->
+                                            <button type="button" class="btn btn-danger btn-sm btn-delete-swal" data-id="{{ $schedule->schedule_id }}">Hapus</button>
+                                        </form>
                                     </td>
                                 @endif
                             </tr>
                         @empty
-                            <!-- Jika data masih kosong -->
                             <tr>
                                 <td colspan="{{ Auth::user()->role === 'admin' ? 7 : 5 }}" class="text-center text-muted py-4">
                                     Belum ada jadwal pelajaran untuk kelas ini.
